@@ -1,6 +1,5 @@
 package samplr.cudservice;
 
-import com.epam.gdansk.model.Command;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -16,6 +15,7 @@ import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import samplr.model.Command;
 
 import java.util.HashMap;
 import java.util.Map;
