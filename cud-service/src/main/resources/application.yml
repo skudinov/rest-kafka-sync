@@ -1,0 +1,14 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      group-id: command
+kafka:
+  topic:
+    command:
+      request: command.request
+      reply: command.reply
+  request-reply:
+    timeout-ms: 1000
+
