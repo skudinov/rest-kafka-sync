@@ -1,8 +1,10 @@
 package samplr.cudservice;
 
+import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.config.TopicConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
@@ -31,7 +34,7 @@ public class CudKafkaConfiguration {
   private String groupId;
 
   @Value("${kafka.topic.command.request}")
-  private String requestTopic;
+  private String requestTopicName;
 
   @Value("${kafka.request-reply.timeout-ms}")
   private Long replyTimeout;
@@ -77,8 +80,17 @@ public class CudKafkaConfiguration {
 
   @Bean
   public NewTopic requestTopic() {
-    Map<String, String> configs = new HashMap<>();
-    configs.put("retention.ms", replyTimeout.toString());
-    return new NewTopic(requestTopic, 2, (short) 2).configs(configs);
+    return TopicBuilder.name(requestTopicName)
+        .partitions(2)
+        .replicas(1)
+        .config(TopicConfig.RETENTION_MS_CONFIG, replyTimeout.toString())
+        .build();
   }
+
+//  @Bean
+//  public KafkaAdmin admin() {
+//    Map<String, Object> configs = new HashMap<>();
+//    configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+//    return new KafkaAdmin(configs);
+//  }
 }

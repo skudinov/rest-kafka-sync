@@ -3,6 +3,7 @@ package samplr.restservice;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.config.TopicConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +77,7 @@ public class RestKafkaConfiguration {
 
   @Bean
   // replaces bean in KafkaAutoConfiguration
-  public ConsumerFactory<Object, Object> kafkaConsumerFactory() {
+  public ConsumerFactory<Object, Object> replyConsumerFactory() {
     JsonDeserializer<Command> jsonDeserializer = new JsonDeserializer<Command>();
     jsonDeserializer.addTrustedPackages(Command.class.getPackage().getName());
     return (ConsumerFactory) new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(), jsonDeserializer);
@@ -103,7 +104,8 @@ public class RestKafkaConfiguration {
   public NewTopic replyTopic() {
     return TopicBuilder.name(replyTopicName)
         .partitions(2)
-        .replicas(2)
+        .replicas(1)
+        .config(TopicConfig.RETENTION_MS_CONFIG, replyTimeout.toString())
         .build();
   }
 }

@@ -21,7 +21,7 @@ public class RestHandler {
   private String requestTopic;
 
   public Mono<ServerResponse> create(ServerRequest request) {
-    ProducerRecord<String, String> record = new ProducerRecord<>(requestTopic, "1", "Hello");
+    ProducerRecord<String, String> record = new ProducerRecord<>(requestTopic, "Hello");
     RequestReplyFuture<String, String, Command> reply = kafkaTemplate.sendAndReceive(record);
     return Mono.fromFuture(reply.completable())
         .flatMap(r -> ServerResponse.ok()
