@@ -2,6 +2,7 @@
 Kafka request-reply pattern implemented with Spring Boot.
 Follows guidelines:
 - [Using ReplyingKafkaTemplate](https://docs.spring.io/spring-kafka/reference/html/#replying-template)
+- [Boot's configuration properties for Kafka](https://stackoverflow.com/questions/55109508/spring-kafka-no-type-information-in-headers-and-no-default-type-provided)
 
 At first, run kafka in docker: ```docker-compose up -d``` then follow ./rest-service/HELP.md
 
