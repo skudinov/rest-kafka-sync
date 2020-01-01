@@ -10,7 +10,7 @@ import java.util.UUID;
 @Component
 public class CommandHandler {
 
-  @KafkaListener(topics = "${kafka.topic.command.request}", containerFactory = "requestReplyListenerContainerFactory")
+  @KafkaListener(id="cud-command", topics = "${kafka.topic.command.request}")
   @SendTo()
   public Command receive(String operation) {
     return new Command(UUID.randomUUID().toString(), operation);
